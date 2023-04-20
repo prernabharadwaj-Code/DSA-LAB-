@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+typedef struct Node Node;
+
+void append(Node** head_ref, int new_data) {
+    Node* new_node = (Node*)malloc(sizeof(Node));
+    new_node->data = new_data;
+    new_node->next = NULL;
+    if (*head_ref == NULL) {
+        *head_ref = new_node;
+        return;
+    }
+    Node* last_node = *head_ref;
+    while (last_node->next != NULL) {
+        last_node = last_node->next;
+    }
+    last_node->next = new_node;
+}
+
+int find_peak_element(Node* head) {
+    if (head == NULL) {
+        return -1;
+    }
+    Node* current = head;
+    while (current->next != NULL) {
+        if (current->data > current->next->data) {
+            return current->data;
+        }
+        current = current->next;
+    }
+    return current->data;
+}
+
+int main() {
+    Node* head = NULL;
+    append(&head, 1);
+    append(&head, 3);
+    append(&head, 4);
+    append(&head, 5);
+    append(&head, 2);
+    int peak_element = find_peak_element(head);
+    printf("Peak element: %d", peak_element);
+    return 0;
+}
